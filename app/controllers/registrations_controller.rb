@@ -47,8 +47,6 @@ class RegistrationsController < ApplicationController
 
   def update
     @registration = Registration.find(params[:id])
-
-    @registration.user_id = params[:user_id]
     @registration.session_id = params[:session_id]
 
     save_status = @registration.save
