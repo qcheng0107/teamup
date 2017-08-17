@@ -9,6 +9,10 @@ class Session < ApplicationRecord
 
   # Indirect associations
 
+  has_many   :users,
+             :through => :registrations,
+             :source => :user
+
   # Validations
 
 end
