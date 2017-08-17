@@ -6,13 +6,25 @@
   <div class="col-md-12 mb-2">
     <dl class="dl-horizontal">
       <dt>Session</dt>
-      <dd><%= @team.session_id %></dd>
+      <dd>
+        <% if @team.session.present? %>
+          <a href="/sessions/<%= @team.session_id %>">
+            <%= @team.session.created_at %>
+          </a>
+        <% end %>
+      </dd>
 
       <dt>Team name</dt>
       <dd><%= @team.team_name %></dd>
 
       <dt>User</dt>
-      <dd><%= @team.user_id %></dd>
+      <dd>
+        <% if @team.user.present? %>
+          <a href="/users/<%= @team.user_id %>">
+            <%= @team.user.email %>
+          </a>
+        <% end %>
+      </dd>
 
     </dl>
 

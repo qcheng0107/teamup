@@ -16,8 +16,20 @@
 
       <% @taggings.each do |tagging| %>
       <tr>
-        <td><%= tagging.skill.user_id %></td>
-        <td><%= tagging.user.email %></td>
+        <td>
+          <% if tagging.skill.present? %>
+            <a href="/skills/<%= tagging.skill.id %>">
+              <%= tagging.skill.user_id %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <% if tagging.user.present? %>
+            <a href="/users/<%= tagging.user.id %>">
+              <%= tagging.user.email %>
+            </a>
+          <% end %>
+        </td>
         <td>
           <a href="/taggings/<%= tagging.id %>" class="btn btn-primary">Show</a>
           <a href="/taggings/<%= tagging.id %>/edit" class="btn btn-warning">Edit</a>

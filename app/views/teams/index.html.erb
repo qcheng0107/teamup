@@ -17,9 +17,21 @@
 
       <% @teams.each do |team| %>
       <tr>
-        <td><%= team.session.created_at %></td>
+        <td>
+          <% if team.session.present? %>
+            <a href="/sessions/<%= team.session.id %>">
+              <%= team.session.created_at %>
+            </a>
+          <% end %>
+        </td>
         <td><%= team.team_name %></td>
-        <td><%= team.user.email %></td>
+        <td>
+          <% if team.user.present? %>
+            <a href="/users/<%= team.user.id %>">
+              <%= team.user.email %>
+            </a>
+          <% end %>
+        </td>
         <td>
           <a href="/teams/<%= team.id %>" class="btn btn-primary">Show</a>
           <a href="/teams/<%= team.id %>/edit" class="btn btn-warning">Edit</a>

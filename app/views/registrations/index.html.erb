@@ -16,8 +16,20 @@
 
       <% @registrations.each do |registration| %>
       <tr>
-        <td><%= registration.user.email %></td>
-        <td><%= registration.session.created_at %></td>
+        <td>
+          <% if registration.user.present? %>
+            <a href="/users/<%= registration.user.id %>">
+              <%= registration.user.email %>
+            </a>
+          <% end %>
+        </td>
+        <td>
+          <% if registration.session.present? %>
+            <a href="/sessions/<%= registration.session.id %>">
+              <%= registration.session.created_at %>
+            </a>
+          <% end %>
+        </td>
         <td>
           <a href="/registrations/<%= registration.id %>" class="btn btn-primary">Show</a>
           
