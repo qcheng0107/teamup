@@ -12,6 +12,10 @@ class User < ApplicationRecord
 
   # Indirect associations
 
+  has_many   :skills,
+             :through => :taggings,
+             :source => :skill
+
   has_many   :sessions,
              :through => :registrations,
              :source => :session

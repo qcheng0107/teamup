@@ -6,6 +6,10 @@ class Skill < ApplicationRecord
 
   # Indirect associations
 
+  has_many   :users,
+             :through => :taggings,
+             :source => :user
+
   # Validations
 
 end
