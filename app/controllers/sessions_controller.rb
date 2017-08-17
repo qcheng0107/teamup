@@ -6,6 +6,8 @@ class SessionsController < ApplicationController
   end
 
   def show
+    @team = Team.new
+    @registration = Registration.new
     @session = Session.find(params[:id])
 
     render("sessions/show.html.erb")

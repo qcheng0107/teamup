@@ -6,6 +6,7 @@ class SkillsController < ApplicationController
   end
 
   def show
+    @tagging = Tagging.new
     @skill = Skill.find(params[:id])
 
     render("skills/show.html.erb")
