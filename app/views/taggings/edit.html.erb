@@ -24,7 +24,7 @@
           Skill
         </label>
 
-        <input type="text" id="skill_id" name="skill_id" placeholder="Skill" class="form-control" value="<%= @tagging.skill_id %>">
+        <%= select_tag(:skill_id, options_from_collection_for_select(Skill.all, :id, :user_id, @tagging.skill_id), :class => "form-control") %>
       </div>
 
       <!-- Label and input for user_id -->
