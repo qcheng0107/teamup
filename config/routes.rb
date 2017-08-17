@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  # Routes for the Registration resource:
+  # CREATE
+  get "/registrations/new", :controller => "registrations", :action => "new"
+  post "/create_registration", :controller => "registrations", :action => "create"
+
+  # READ
+  get "/registrations", :controller => "registrations", :action => "index"
+  get "/registrations/:id", :controller => "registrations", :action => "show"
+
+  # UPDATE
+  get "/registrations/:id/edit", :controller => "registrations", :action => "edit"
+  post "/update_registration/:id", :controller => "registrations", :action => "update"
+
+  # DELETE
+  get "/delete_registration/:id", :controller => "registrations", :action => "destroy"
+  #------------------------------
+
   # Routes for the Session resource:
   # CREATE
   get "/sessions/new", :controller => "sessions", :action => "new"
