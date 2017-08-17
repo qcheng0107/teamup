@@ -1,4 +1,5 @@
 Rails.application.routes.draw do
+  root :to => "sessions#index"
   # Routes for the Tagging resource:
   # CREATE
   get "/taggings/new", :controller => "taggings", :action => "new"
