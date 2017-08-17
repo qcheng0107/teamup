@@ -24,7 +24,7 @@
           Session
         </label>
 
-        <input type="text" id="session_id" name="session_id" placeholder="Session" class="form-control" value="<%= @team.session_id %>">
+        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :created_at, @team.session_id), :class => "form-control") %>
       </div>
 
       <!-- Label and input for team_name -->
