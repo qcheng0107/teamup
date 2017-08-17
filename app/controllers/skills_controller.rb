@@ -1,6 +1,7 @@
 class SkillsController < ApplicationController
   def index
-    @skills = Skill.page(params[:page]).per(10)
+    @q = Skill.ransack(params[:q])
+    @skills = @q.result(:distinct => true).includes(:taggings, :users).page(params[:page]).per(10)
 
     render("skills/index.html.erb")
   end
