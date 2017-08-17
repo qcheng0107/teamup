@@ -1,6 +1,9 @@
 class Session < ApplicationRecord
   # Direct associations
 
+  has_many   :teams,
+             :dependent => :destroy
+
   has_many   :registrations,
              :dependent => :destroy
 
