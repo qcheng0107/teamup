@@ -10,7 +10,7 @@ class RegistrationsController < ApplicationController
   end
 
   def index
-    @registrations = Registration.all
+    @registrations = Registration.page(params[:page]).per(10)
 
     render("registrations/index.html.erb")
   end

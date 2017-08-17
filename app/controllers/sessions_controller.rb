@@ -1,6 +1,6 @@
 class SessionsController < ApplicationController
   def index
-    @sessions = Session.all
+    @sessions = Session.page(params[:page]).per(10)
 
     render("sessions/index.html.erb")
   end
