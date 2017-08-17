@@ -1,4 +1,21 @@
 Rails.application.routes.draw do
+  # Routes for the Skill resource:
+  # CREATE
+  get "/skills/new", :controller => "skills", :action => "new"
+  post "/create_skill", :controller => "skills", :action => "create"
+
+  # READ
+  get "/skills", :controller => "skills", :action => "index"
+  get "/skills/:id", :controller => "skills", :action => "show"
+
+  # UPDATE
+  get "/skills/:id/edit", :controller => "skills", :action => "edit"
+  post "/update_skill/:id", :controller => "skills", :action => "update"
+
+  # DELETE
+  get "/delete_skill/:id", :controller => "skills", :action => "destroy"
+  #------------------------------
+
   # Routes for the Team resource:
   # CREATE
   get "/teams/new", :controller => "teams", :action => "new"
