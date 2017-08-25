@@ -9,14 +9,51 @@
 <% end %>
 
 <div class="page-header">
-  <h3>Edit Team #<%= @team.id %></h3>
+  <h3>Edit Team <%= @team.team_name %></h3>
+  <label class="control-label">Team Members</label>
+    <% @team.users.each do |user| %>
+      <li>
+        <a href="/users/<%= user.id %>"><%= user.dropdown_name %></a>
+      </li>
+    <% end %>
+  </h5>
 </div>
 
+  <div class="form-group">
+    <label for="member_id" class="control-label">
+      All Students Enrolled in <a href="/sessions/<%= @team.session.id %>"><%= @team.session.dropdown_text %></a>
+     </label>
+
+    <% @team.session.users.each do |user| %>
+    <div class="row">
+    <div class="col-md-12">
+    <dl class="dl-horizontal">
+      <dd>
+        <a href="/users/<%= user.id %>"><%= user.dropdown_name %></a>
+        <% member = Member.find_by(team_id: @team.id, user_id: user.id) %>
+        <% if member.nil? %>
+          <div class="form-group">
+            <form action="/create_member" method="post">
+              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+              <input name="team_id" type="hidden" value="<%= @team.id %>">
+              <input name="user_id" type="hidden" value="<%= user.id %>">
+              <button class="btn btn-success">
+                Add to team
+              </button>
+            </form>
+          </div>
+        <% end %>
+      </dd>
+    <% end %>
+    </div>
+    </div>
+
 <div class="row">
-  <div class="col-md-12">
+  <div class="col-md-12 mb-2">
     <form action="/update_team/<%= @team.id %>" method="post">
       <!-- Hidden input for authenticity token to protect from forgery -->
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+      <input name="user_id" type="hidden" value="<%= @team.user_id %>">
 
       <!-- Label and input for session_id -->
       <div class="form-group">
@@ -24,7 +61,7 @@
           Session
         </label>
 
-        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :created_at, @team.session_id), :class => "form-control") %>
+        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :dropdown_text, @team.session_id), :class => "form-control") %>
       </div>
 
       <!-- Label and input for team_name -->
@@ -34,15 +71,6 @@
         </label>
 
         <input type="text" id="team_name" name="team_name" placeholder="Team name" class="form-control" value="<%= @team.team_name %>">
-      </div>
-
-      <!-- Label and input for user_id -->
-      <div class="form-group">
-        <label for="user_id" class="control-label">
-          User
-        </label>
-
-        <%= select_tag(:user_id, options_from_collection_for_select(User.all, :id, :email, @team.user_id), :class => "form-control") %>
       </div>
 
       <button class="btn btn-warning">

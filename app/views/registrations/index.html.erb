@@ -1,139 +1,36 @@
 <div class="page-header">
   <h1>
-    Registrations
+    My Registrations
     <a href="/registrations/new" class="btn btn-lg btn-success">New Registration</a>
   </h1>
-</div><div class="row mb-1">
-  <div class="col-md-12">
-    <%= search_form_for @q, :class => collapse_search_form, :id => "registrations_filters" do |f| %>
-      <p class="lead">Narrow results:</p>
-
-        <div class="form-group">
-          <%= f.label :created_at, "Created at" %>
-          <div class="row">
-            <div class='col-md-6 mb-1'>
-              <div class='input-group date' id='created_atgteqPicker'>
-                  <%= f.text_field :created_at_gteq, :class => "form-control", :placeholder => "Created at greater than or equal to" %>
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-              </div>
-            </div>
-
-            <div class='col-md-6'>
-              <div class='input-group date' id='created_atlteqPicker'>
-                  <%= f.text_field :created_at_lteq, :class => "form-control", :placeholder => "Created at less than or equal to" %>
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <script type="text/javascript">
-          $(function () {
-              $('#created_atgteqPicker').datetimepicker({
-                  format: 'YYYY-MM-DD hh:mm:SS'
-              });
-              $('#created_atlteqPicker').datetimepicker({
-                  useCurrent: false,
-                  format: 'YYYY-MM-DD hh:mm:SS'
-              });
-              $('#created_atgteqPicker').on("dp.change", function (e) {
-                  $('#created_atlteqPicker').data("DateTimePicker").minDate(e.date);
-              });
-              $('#created_atlteqPicker').on("dp.change", function (e) {
-                  $('#created_atgteqPicker').data("DateTimePicker").maxDate(e.date);
-              });
-          });
-      </script>
-
-        <div class="form-group">
-      <%= f.label :user_email_cont, "User email contains" %>
-      <%= f.text_field :user_email_cont, :class => "form-control", :placeholder => "User email contains" %>
-    </div>
-
-<div class="form-group">
-          <%= f.label :created_at, "Session Created at" %>
-          <div class="row">
-            <div class='col-md-6 mb-1'>
-              <div class='input-group date' id='sessiongteqcreated_atPicker'>
-                  <%= f.text_field :session_created_at_gteq, :class => "form-control", :placeholder => "Session Created at greater than or equal to" %>
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-              </div>
-            </div>
-
-            <div class='col-md-6'>
-              <div class='input-group date' id='sessionlteqcreated_atPicker'>
-                  <%= f.text_field :session_created_at_lteq, :class => "form-control", :placeholder => "Session Created at less than or equal to" %>
-                  <span class="input-group-addon">
-                      <span class="glyphicon glyphicon-calendar"></span>
-                  </span>
-              </div>
-            </div>
-          </div>
-      </div>
-      <script type="text/javascript">
-          $(function () {
-              $('#sessiongteqcreated_atPicker').datetimepicker({
-                  format: 'YYYY-MM-DD hh:mm:SS'
-              });
-              $('#sessionlteqcreated_atPicker').datetimepicker({
-                  useCurrent: false,
-                  format: 'YYYY-MM-DD hh:mm:SS'
-              });
-              $('#sessiongteqcreated_atPicker').on("dp.change", function (e) {
-                  $('#sessionlteqcreated_atPicker').data("DateTimePicker").minDate(e.date);
-              });
-              $('#sessionlteqcreated_atPicker').on("dp.change", function (e) {
-                  $('#sessiongteqcreated_atPicker').data("DateTimePicker").maxDate(e.date);
-              });
-          });
-      </script>
-
-      <%= f.submit :class => "btn btn-primary btn-block mb-1" %>
-
-      <a href="/registrations" class="btn btn-default btn-block mb-1">Clear filters</a>
-    <% end %>
-    <a class="btn btn-default btn-block mb-1" data-toggle="collapse" href="#registrations_filters">
-      Show Filters
-    </a>
-  </div>
-</div>
 
 <div class="row">
   <div class="col-md-12">
     <table class="table table-striped table-hover">
       <tr>
-        <th>User</th>
-        <th>Session</th>
-        <th>Actions</th>
+        <th>Students</th>
+        <th>Registered Sessions</th>
+        <th>Drop Session</th>
       </tr>
 
-      <% @registrations.each do |registration| %>
+      <% current_user.registrations.each do |registration| %>
       <tr>
         <td>
-          <% if registration.user.present? %>
             <a href="/users/<%= registration.user.id %>">
-              <%= registration.user.email %>
+              <%= registration.user.dropdown_name %>
             </a>
-          <% end %>
         </td>
         <td>
           <% if registration.session.present? %>
             <a href="/sessions/<%= registration.session.id %>">
-              <%= registration.session.created_at %>
+              <%= registration.session.dropdown_text %>
             </a>
           <% end %>
         </td>
+        
         <td>
-          <a href="/registrations/<%= registration.id %>" class="btn btn-primary">Show</a>
-          
           <% if current_user == registration.user %>
-            <a href="/registrations/<%= registration.id %>/edit" class="btn btn-warning">Edit</a>
-            <a href="/delete_registration/<%= registration.id %>" class="btn btn-danger" rel="nofollow">Delete</a>
+            <a href="/delete_registration/<%= registration.id %>" class="btn btn-danger" rel="nofollow">Drop</a>
           <% end %>
         </td>
       </tr>

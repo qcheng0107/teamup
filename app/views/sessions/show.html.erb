@@ -1,30 +1,9 @@
 <div class="page-header">
-  <h3>Session #<%= @session.id %></h3>
-</div>
-
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>Quarter</dt>
-      <dd><%= @session.quarter %></dd>
-
-      <dt>Course name</dt>
-      <dd><%= @session.course_name %></dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/sessions" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/sessions/<%= @session.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_session/<%= @session.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
-  </div>
+  <h3><%= @session.course_name %></h3>
+  <body><%= @session.quarter %></body>
+  <a href="/sessions/<%= @session.id %>/edit" class="btn btn-warning">
+    <i class="fa fa-edit"></i>
+  </a>
 </div>
 
 <!-- A Session has many registrations -->
@@ -33,44 +12,41 @@
   <div class="col-md-12">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Registrations
+        All Enrolled Students
       </li>
 
       <% @session.registrations.each do |registration| %>
         <li class="list-group-item">
-          <a href="/registrations/<%= registration.id %>">
-            <%= registration.user_id %>
+          <a href="/users/<%= registration.user.id %>">
+            <%= registration.user.dropdown_name %>
           </a>
           <div class="btn-group btn-group-xs pull-right">
-            <a href="/registrations/<%= registration.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
+            <% if current_user == registration.user %>
             <a href="/registrations/<%= registration.id %>/edit" class="btn btn-warning">
               <i class="fa fa-edit"></i>
             </a>
             <a href="/delete_registration/<%= registration.id %>" class="btn btn-danger" rel="nofollow">
               <i class="fa fa-trash-o"></i>
             </a>
+            <% end %>
           </div>
         </li>
       <% end %>
 
-      <li class="list-group-item">
-        <form action="/create_registration" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-      <!-- Label and input for user_id -->
-      <input type="hidden" name="user_id" value="<%= current_user.id %>">
-
-      <!-- Label and input for session_id -->
-      <input type="hidden" name="session_id" value="<%= @session.id %>">
-
-      <button class="btn btn-block btn-success">
-        Create Registration
-      </button>
-    </form>
-      </li>
+      <% registration = Registration.find_by(session_id: @session.id, user_id: current_user.id) %>
+       <% unless registration.present? %>
+        <dd class="list-group-item">
+          <form action="/create_registration" method="post">
+            <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+            <input type="hidden" name="user_id" value="<%= current_user.id %>">
+            <input type="hidden" name="session_id" value="<%= @session.id %>">
+    
+            <button class="btn btn-block btn-success">
+              Register for this Session
+            </button>
+          </form>
+        </dd>
+       <% end %> 
     </ul>
   </div>
 </div>
@@ -81,90 +57,49 @@
   <div class="col-md-12">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Teams
+        All Teams
       </li>
 
-      <% @session.teams.each do |team| %>
-        <li class="list-group-item">
-          <a href="/teams/<%= team.id %>">
-            <%= team.session_id %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/teams/<%= team.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/teams/<%= team.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_team/<%= team.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-
+    <% @session.teams.each do |team| %>
       <li class="list-group-item">
-        <form action="/create_team" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-      <!-- Label and input for session_id -->
-      <input type="hidden" name="session_id" value="<%= @session.id %>">
-
-      <!-- Label and input for team_name -->
-      <div class="form-group">
-        <label for="team_name" class="control-label">
-          Team name
-        </label>
-
-        <input type="text" id="team_name" name="team_name" placeholder="Team name" class="form-control" value="">
-      </div>
-
-      <!-- Label and input for user_id -->
-      <div class="form-group">
-        <label for="user_id" class="control-label">
-          User
-        </label>
-
-        <%= select_tag(:user_id, options_from_collection_for_select(User.all, :id, :email), :class => "form-control") %>
-      </div>
-
-      <button class="btn btn-block btn-success">
-        Create Team
-      </button>
-    </form>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<!-- A Session has many users -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Users
-      </li>
-
-      <% @session.users.each do |user| %>
-        <li class="list-group-item">
-          <a href="/users/<%= user.id %>">
-            <%= user.email %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/users/<%= user.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
+      <% member = Member.find_by(team_id: team.id, user_id: current_user.id) %>
+        <a href="/teams/<%= team.id %>">
+          <%= team.team_name %>
+        </a>
+      <% registration = Registration.find_by(session_id: @session.id, user_id: current_user.id) %>
+      <% if registration.present? %> 
+        <% if member.present? %>
+            <div class="btn-group btn-group-xs pull-right">
+              <a href="/teams/<%= team.id %>/edit" class="btn btn-warning">
+                <i class="fa fa-edit"></i>
+              </a>
+              <a href="/delete_team/<%= team.id %>" class="btn btn-danger" rel="nofollow">
+                <i class="fa fa-trash-o"></i>
+              </a>
+            </div>
+        <% end %>
+      
+        <% myteam = Team.find_by(session_id: @session.id, user_id: current_user.id) %>
+        <% unless myteam == nil %>
+          <li class="list-group-item">
+            <form action="/create_team" method="post">
+              <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+              <input type="hidden" name="session_id" value="<%= @session.id %>">
+              <input type="hidden" name="user_id" value="<%= current_user.id %>">
+          
+              <div class="form-group">
+                <input type="text" id="team_name" name="team_name" placeholder="Team name" class="form-control" value="">
+              </div>
+                
+              <button class="btn btn-block btn-success">
+                Create Team
+              </button>
+            </form>
+          </li>
+        <% end %>
+      
       <% end %>
+    <% end %>
     </ul>
   </div>
 </div>

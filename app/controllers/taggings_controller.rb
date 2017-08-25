@@ -33,7 +33,7 @@ class TaggingsController < ApplicationController
       when "/taggings/new", "/create_tagging"
         redirect_to("/taggings")
       else
-        redirect_back(:fallback_location => "/", :notice => "Tagging created successfully.")
+        redirect_back(:fallback_location => "/", :notice => "Skill created successfully.")
       end
     else
       render("taggings/new.html.erb")
@@ -59,9 +59,9 @@ class TaggingsController < ApplicationController
 
       case referer
       when "/taggings/#{@tagging.id}/edit", "/update_tagging"
-        redirect_to("/taggings/#{@tagging.id}", :notice => "Tagging updated successfully.")
+        redirect_to("/taggings/#{@tagging.id}", :notice => "Skill updated successfully.")
       else
-        redirect_back(:fallback_location => "/", :notice => "Tagging updated successfully.")
+        redirect_back(:fallback_location => "/", :notice => "Skill updated successfully.")
       end
     else
       render("taggings/edit.html.erb")
@@ -74,9 +74,9 @@ class TaggingsController < ApplicationController
     @tagging.destroy
 
     if URI(request.referer).path == "/taggings/#{@tagging.id}"
-      redirect_to("/", :notice => "Tagging deleted.")
+      redirect_to("/", :notice => "Skill unselected.")
     else
-      redirect_back(:fallback_location => "/", :notice => "Tagging deleted.")
+      redirect_back(:fallback_location => "/", :notice => "Skill unselected.")
     end
   end
 end

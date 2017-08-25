@@ -24,7 +24,7 @@
           Session
         </label>
 
-        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :created_at, @team.session_id), :class => "form-control") %>
+        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :dropdown_text, @team.session_id), :class => "form-control") %>
       </div>
 
       <!-- Label and input for team_name -->
@@ -35,21 +35,12 @@
 
         <input type="text" id="team_name" name="team_name" placeholder="Team name" class="form-control" value="<%= @team.team_name %>">
       </div>
-
-      <!-- Label and input for user_id -->
-      <div class="form-group">
-        <label for="user_id" class="control-label">
-          User
-        </label>
-
-        <%= select_tag(:user_id, options_from_collection_for_select(User.all, :id, :email, @team.user_id), :class => "form-control") %>
-      </div>
-
+        
       <button class="btn btn-success">
         Create Team
       </button>
+      
       or
       <a href="/teams">Cancel</a>
-    </form>
   </div>
 </div>

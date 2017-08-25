@@ -10,9 +10,15 @@ class Session < ApplicationRecord
   # Indirect associations
 
   has_many   :users,
-             :through => :registrations,
-             :source => :user
+             :through => :registrations
 
   # Validations
+
+  validates :quarter, :presence => true
+  validates :course_name, :presence => true
+
+  def dropdown_text
+    "#{quarter}: #{course_name}"
+  end
 
 end

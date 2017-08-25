@@ -53,18 +53,6 @@
       <%= f.text_field :user_email_cont, :class => "form-control", :placeholder => "User email contains" %>
     </div>
 
-<div class="form-group">
-  <%= f.label :user_id, "Skill User" %>
-  <div class="row">
-    <div class='col-md-6 mb-1'>
-      <%= f.text_field :skill_user_id_gteq, :class => "form-control", :placeholder => "Skill User greater than or equal to" %>
-    </div>
-    <div class='col-md-6'>
-      <%= f.text_field :skill_user_id_lteq, :class => "form-control", :placeholder => "Skill User less than or equal to" %>
-    </div>
-  </div>
-</div>
-
       <%= f.submit :class => "btn btn-primary btn-block mb-1" %>
 
       <a href="/taggings" class="btn btn-default btn-block mb-1">Clear filters</a>

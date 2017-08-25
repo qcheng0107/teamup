@@ -40,6 +40,54 @@ class SkillsController < ApplicationController
       render("skills/new.html.erb")
     end
   end
+  
+  def create
+    @skill = Skill.new
+
+    @skill.skill = params[:skill]
+
+    Tagging.create(user_id: params[:user_id], skill_id: params[:skill_id])
+
+    save_status = @skill.save
+
+    if save_status == true
+      referer = URI(request.referer).path
+
+      case referer
+      when "/skills/new", "/create_skill"
+        redirect_to("/skills")
+      when "/user", "/quick_create_skill"
+        redirect_to("/users/:id")
+      else
+        redirect_back(:fallback_location => "/", :notice => "Skill created successfully.")
+      end
+    else
+      render("skills/new.html.erb")
+    end
+  end
+  
+  def quick_create
+    @skill = Skill.new
+
+    @skill.skill_id = params[:skill_id]
+
+    save_status = @skill.save
+
+    if save_status == true
+      referer = URI(request.referer).path
+
+      case referer
+      when "/skills/new", "/create_skill"
+        redirect_to("/skills")
+      when "/user", "/quick_create_skill"
+        redirect_to("/users/:id")
+      else
+        redirect_back(:fallback_location => "/", :notice => "Skill created successfully.")
+      end
+    else
+      render("skills/new.html.erb")
+    end
+  end
 
   def edit
     @skill = Skill.find(params[:id])

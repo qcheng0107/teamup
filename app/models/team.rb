@@ -3,10 +3,16 @@ class Team < ApplicationRecord
 
   belongs_to :session
 
-  belongs_to :user
+  has_many   :members,
+             :dependent => :destroy
 
   # Indirect associations
 
+  has_many   :users,
+             :through => :members
+
   # Validations
+
+  validates :team_name, :presence => true, :uniqueness => true
 
 end

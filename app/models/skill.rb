@@ -7,9 +7,10 @@ class Skill < ApplicationRecord
   # Indirect associations
 
   has_many   :users,
-             :through => :taggings,
-             :source => :user
+             :through => :taggings
 
   # Validations
+
+  validates :skill, :presence => true
 
 end

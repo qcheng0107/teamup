@@ -8,5 +8,8 @@ class Registration < ApplicationRecord
   # Indirect associations
 
   # Validations
+  
+  validates :session_id, :presence => true
+  validates :user_id, :presence => true
 
 end

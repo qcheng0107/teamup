@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
   devise_for :admin_users, ActiveAdmin::Devise.config
+  mount WebGit::Engine, at: "/rails/git"
   ActiveAdmin.routes(self)
   root :to => "sessions#index"
   # Routes for the Tagging resource:
@@ -17,6 +18,23 @@ Rails.application.routes.draw do
 
   # DELETE
   get "/delete_tagging/:id", :controller => "taggings", :action => "destroy"
+  #------------------------------
+
+  # Routes for the Member resource:
+  # CREATE
+  get "/members/new", :controller => "members", :action => "new"
+  post "/create_member", :controller => "members", :action => "create"
+
+  # READ
+  get "/members", :controller => "members", :action => "index"
+  get "/members/:id", :controller => "members", :action => "show"
+
+  # UPDATE
+  get "/members/:id/edit", :controller => "members", :action => "edit"
+  post "/update_member/:id", :controller => "members", :action => "update"
+
+  # DELETE
+  get "/delete_member/:id", :controller => "members", :action => "destroy"
   #------------------------------
 
   # Routes for the Skill resource:

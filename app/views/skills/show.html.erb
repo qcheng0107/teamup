@@ -1,113 +1,57 @@
 <div class="page-header">
-  <h3>Skill #<%= @skill.id %></h3>
+  <h3><%= @skill.skill %></h3>
 </div>
-
-<div class="row">
-  <div class="col-md-12 mb-2">
-    <dl class="dl-horizontal">
-      <dt>User</dt>
-      <dd><%= @skill.user_id %></dd>
-
-      <dt>Skill</dt>
-      <dd><%= @skill.skill %></dd>
-
-    </dl>
-
-    <div class="btn-group btn-group-justified">
-      <a href="/skills" class="btn btn-primary">
-        Back
-      </a>
-      <a href="/skills/<%= @skill.id %>/edit" class="btn btn-warning">
-        Edit
-      </a>
-      <a href="/delete_skill/<%= @skill.id %>" class="btn btn-danger" rel="nofollow">
-        Delete
-      </a>
-    </div>
-  </div>
-</div>
-
-<!-- A Skill has many taggings -->
 
 <div class="row">
   <div class="col-md-12">
     <ul class="list-group">
       <li class="list-group-item list-group-item-info">
-        Taggings
-      </li>
-
-      <% @skill.taggings.each do |tagging| %>
-        <li class="list-group-item">
-          <a href="/taggings/<%= tagging.id %>">
-            <%= tagging.skill_id %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/taggings/<%= tagging.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/taggings/<%= tagging.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_tagging/<%= tagging.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
-      <% end %>
-
-      <li class="list-group-item">
-        <form action="/create_tagging" method="post">
-      <!-- Hidden input for authenticity token to protect from forgery -->
-      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
-
-      <!-- Label and input for skill_id -->
-      <input type="hidden" name="skill_id" value="<%= @skill.id %>">
-
-      <!-- Label and input for user_id -->
-      <div class="form-group">
-        <label for="user_id" class="control-label">
-          User
-        </label>
-
-        <%= select_tag(:user_id, options_from_collection_for_select(User.all, :id, :email), :class => "form-control") %>
-      </div>
-
-      <button class="btn btn-block btn-success">
-        Create Tagging
-      </button>
-    </form>
-      </li>
-    </ul>
-  </div>
-</div>
-
-<!-- A Skill has many users -->
-
-<div class="row">
-  <div class="col-md-12">
-    <ul class="list-group">
-      <li class="list-group-item list-group-item-info">
-        Users
+        Who has this skill?
       </li>
 
       <% @skill.users.each do |user| %>
-        <li class="list-group-item">
-          <a href="/users/<%= user.id %>">
-            <%= user.email %>
-          </a>
-          <div class="btn-group btn-group-xs pull-right">
-            <a href="/users/<%= user.id %>" class="btn btn-primary">
-              <i class="fa fa-search-plus"></i>
-            </a>
-            <a href="/users/<%= user.id %>/edit" class="btn btn-warning">
-              <i class="fa fa-edit"></i>
-            </a>
-            <a href="/delete_user/<%= user.id %>" class="btn btn-danger" rel="nofollow">
-              <i class="fa fa-trash-o"></i>
-            </a>
-          </div>
-        </li>
+      <li class="list-group-item">
+        <a href="/users/<%= user.id %>"><%= user.dropdown_name %></a>
+          <% if current_user.id == user.id %>
+            <div class="btn-group btn-group-xs pull-right">
+              <!--<a href="/skills/<%= @skill.id %>/edit" class="btn btn-warning">-->
+              <!--  Edit-->
+              <!--</a>-->
+              <% tagging = Tagging.find_by(user_id: current_user.id, skill_id: @skill.id) %>
+              <a href="/delete_tagging/<%= tagging.id %>" class="btn btn-danger" rel="nofollow">
+                Unselect this skill
+              </a>
+            </div>
+          <% end %>
       <% end %>
     </ul>
   </div>
 </div>
+      
+
+<!-- Adding skill if not currently my skill -->
+<% skill = current_user.skills.find_by(id: @skill.id) %>
+  <% unless skill.present? %>
+    <div class="row">
+      <div class="col-md-12">
+        <ul class="list-group">
+          <li class="list-group-item">
+          <form action="/create_tagging" method="post">
+          <!-- Hidden input for authenticity token to protect from forgery -->
+          <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+    
+          <!-- Label and input for skill_id -->
+          <input type="hidden" name="skill_id" value="<%= @skill.id %>">
+    
+          <!-- Label and input for user_id -->
+          <input type="hidden" name="user_id" value="<%= current_user.id %>">
+    
+          <button class="btn btn-block btn-success">
+            Add to my skills
+          </button>
+          </form>
+          </li>
+        </ul>
+      </div>
+    </div>
+  <% end %>
