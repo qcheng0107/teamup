@@ -9,7 +9,7 @@
       <dd>
         <% if @registration.user.present? %>
           <a href="/users/<%= @registration.user_id %>">
-            <%= @registration.user.email %>
+            <%= @registration.user.dropdown_name %>
           </a>
         <% end %>
       </dd>
@@ -18,7 +18,7 @@
       <dd>
         <% if @registration.session.present? %>
           <a href="/sessions/<%= @registration.session_id %>">
-            <%= @registration.session.created_at %>
+            <%= @registration.session.dropdown_text %>
           </a>
         <% end %>
       </dd>

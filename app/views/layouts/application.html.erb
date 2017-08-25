@@ -41,20 +41,23 @@
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
         <ul class="nav navbar-nav">
-          <li><a href="/taggings">Taggings</a></li>
+          <% if current_user.present? %>
+            <li><a href="/users/<%= current_user.id %>">Profile</a></li>
+            </a>
+          <% end %>
+          <li><a href="/registrations">My Registrations</a></li>
+          <li><a href="/members">My Team Memberships</a></li>          
           <li><a href="/skills">Skills</a></li>
-          <li><a href="/teams">Teams</a></li>
-          <li><a href="/registrations">Registrations</a></li>
-          <li><a href="/sessions">Sessions</a></li>
-          <li><a href="/users">Users</a></li>
-          <li><a href="/rails/info">Sitemap</a></li>
+          <li><a href="/teams">All Teams</a></li>
+          <li><a href="/sessions">All Sessions</a></li>
+          <li><a href="/users">All Students</a></li>
         </ul>
 
         <ul class="nav navbar-nav navbar-right">
           <% if current_user.present? %>
             <li>
               <a href="/users/edit">
-                <%= current_user.email %>
+                Edit Profile
               </a>
             </li>
 

@@ -9,4 +9,7 @@ class Tagging < ApplicationRecord
 
   # Validations
 
+  validates :skill_id, :presence => true
+  validates :user_id, :presence => true
+
 end

@@ -9,7 +9,7 @@
       <dd>
         <% if @team.session.present? %>
           <a href="/sessions/<%= @team.session_id %>">
-            <%= @team.session.created_at %>
+            <%= @team.session.dropdown_text %>
           </a>
         <% end %>
       </dd>
@@ -17,16 +17,32 @@
       <dt>Team name</dt>
       <dd><%= @team.team_name %></dd>
 
-      <dt>User</dt>
+      <dt>Team Members</dt>
       <dd>
-        <% if @team.user.present? %>
-          <a href="/users/<%= @team.user_id %>">
-            <%= @team.user.email %>
+        <% @team.users.each do |user| %>
+          <a href="/users/<%= user.id %>">
+            <%= user.first_name %> <%= user.last_name %>
           </a>
         <% end %>
       </dd>
-
     </dl>
+
+<% member = Member.find_by(team_id: @team.id, user_id: current_user.id) %>
+  <% unless member.present? %>
+    <form action="/create_member" method="post">
+      <!-- Hidden input for authenticity token to protect from forgery -->
+      <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
+
+      <!-- Label and input for user_id -->
+      <input type="hidden" name="user_id" value="<%= current_user.id %>">
+
+      <!-- Label and input for team_id -->
+      <input type="hidden" name="team_id" value="<%= @team.id %>">
+
+      <button class="btn btn-success">
+        Join team
+      </button>
+  <% end %>
 
     <div class="btn-group btn-group-justified">
       <a href="/teams" class="btn btn-primary">

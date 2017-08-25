@@ -1,6 +1,6 @@
 <!-- Validation failure messages -->
-<% if @registration.errors.any? %>
-  <% @registration.errors.full_messages.each do |message| %>
+<% if @member.errors.any? %>
+  <% @member.errors.full_messages.each do |message| %>
     <div class="alert alert-dismissable alert-danger">
       <button type="button" class="close" data-dismiss="alert" aria-hidden="true">&times;</button>
       <%= message %>
@@ -9,32 +9,29 @@
 <% end %>
 
 <div class="page-header">
-  <h3>Edit Registration #<%= @registration.id %></h3>
+  <h3>Edit Membership #<%= @member.id %></h3>
 </div>
 
 <div class="row">
   <div class="col-md-12">
-    <form action="/update_registration/<%= @registration.id %>" method="post">
+    <form action="/update_member/<%= @member.id %>" method="post">
       <!-- Hidden input for authenticity token to protect from forgery -->
       <input name="authenticity_token" type="hidden" value="<%= form_authenticity_token %>">
 
-      
-      
-
       <!-- Label and input for session_id -->
       <div class="form-group">
-        <label for="session_id" class="control-label">
-          Session
+        <label for="team_id" class="control-label">
+          Team
         </label>
 
-        <%= select_tag(:session_id, options_from_collection_for_select(Session.all, :id, :dropdown_text, @registration.session_id), :class => "form-control") %>
+        <%= select_tag(:team_id, options_from_collection_for_select(Team.all, :id, :team_name), :class => "form-control") %>
       </div>
 
       <button class="btn btn-warning">
-        Update Registration
+        Update Membership
       </button>
       or
-      <a href="/registrations/<%= @registration.id %>">Cancel</a>
+      <a href="/members/<%= @member.id %>">Cancel</a>
     </form>
   </div>
 </div>
